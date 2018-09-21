@@ -10,11 +10,11 @@ let searchQuery;
 const wordBank = ['book', 'business', 'child', 'company', 'country', 'day', 'eye', 'fact', 'family', 'government', 'hand', 'home', 'job', 'life', 'man', 'money', 'month', 'mother', 'night', 'number', 'people', 'Pluto', 'problem', 'question', 'room', 'school', 'Spiderman', 'Superman', 'student', 'Music', 'time', 'water', 'week', 'woman', 'word', 'work', 'world', 'year'];
 //creates a reference for the voice of jeeves so we can change what he is saying
 const jeevesVoice = document.getElementById('jeevesVoice');
-// button which replaces game start button to advances down the stage tree with affirmative values
+// button which replaces game start button to advance down the stage tree with affirmative values
 const buttonSure = document.createElement('button');
 buttonSure.style.width = '143px';
 buttonSure.innerText = "...sure.";
-// button which replaces game start button to advances down the stage tree with nonaffirmative values
+// button which replaces game start button to advance down the stage tree with nonaffirmative values
 const buttonNo = document.createElement("button");
 buttonNo.style.width = '143px';
 buttonNo.innerText = "What, no?"
@@ -25,14 +25,14 @@ button.addEventListener('click', function(){
   if (stage === 1) {
     // searchTerm saved as a var to access in all stages of the function
     var searchTerm = document.getElementById('search').value;
-    // reassingment to global so every listerer has access to value
+    // reassignment to global so every listener has access to value
     // great opportunity for refactoring because the listener has parameter options
     searchQuery = searchTerm;
     //first API data retrieval...gets rhyming words to simulate Jeeves hard of hearing
     $.get(`https://api.datamuse.com/words?rel_rhy=${searchTerm}`,
       // this function invokes if the get is a success
       (rhyme) => {
-        // jeeves demonstrates his hard of hearing
+        // jeeves demonstrates he's hard of hearing
         jeevesVoice.innerHTML = "Did you say " + rhyme[0].word + " ?";
         // edits the UI to remove the game start button
         button.remove();     
@@ -40,7 +40,7 @@ button.addEventListener('click', function(){
         buttonNo.innerText = "What, no? " + searchTerm + ".";
         // changes the sure button to be less enthused
         buttonSure.innerText = "...sure.";
-        // modify the ui to navigate the control flow
+        // modify the UI to navigate the control flow
         $('#container').append(buttonSure);      
         $('#container').append(buttonNo);
         // update the game state to stage 2 
@@ -95,7 +95,7 @@ buttonNo.addEventListener('click', function(){
       }
       // if the wiki article has a description, we are good to go
       else {
-        // update ui and game state, go to closing state
+        // update UI and game state, go to closing state
           jeevesVoice.innerHTML = (`Oh, ${searchQuery}! If I recall...that is a ${response.description}.`);
           buttonSure.innerText = "Wow...thanks!";
           buttonNo.remove();
@@ -113,7 +113,7 @@ buttonSure.addEventListener('click', function(){
   //confirm first rhyme value
   if (stage == 2) {
     var firstRhymeWord;
-    // this is a get request to find the next rhymeing value
+    // this is a get request to find the next rhyming value
     $.get(`https://api.datamuse.com/words?rel_rhy=${searchQuery}`,
       // if the get is a success, we invoke here
       (rhyme) => {
@@ -130,11 +130,11 @@ buttonSure.addEventListener('click', function(){
     $.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${firstRhymeWord}`,
     // if we have a successful return, invoke
     (response) => {
-      // if there are more than one wiki article
+      // if there is more than one wiki article
       if (response.type === 'disambiguation') {
         // random index finder
         const index = Math.floor(Math.random() * (37 - 0 + 1) + 0);
-        // get wiki description for wrandom workBank value
+        // get wiki description for random workBank value
         $.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${wordBank[index]}`,
           // if the get is a success, invoke
           (result) => {
@@ -176,7 +176,7 @@ else if (stage === 3) {
   $.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${firstRhymeWord}`,
     // if retrieved, invoke
     (response) => {
-      // if there is more than one wiki for the word we are gonna use the word bank instead
+      // if there is more than one wiki for the word use the word bank instead
       if (response.type === 'disambiguation') {
         //random index for word bank
         const index = Math.floor(Math.random() * (37 - 0 + 1) + 0);
